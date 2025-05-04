@@ -95,7 +95,7 @@ architecture Behavioral of ALU is
     signal w_MUX_in4           : std_logic_vector(7 downto 0);
     
 begin
-    rippleadder1_unit: ripple_adder1
+    ripple_adder1_unit: ripple_adder1
         port map(
             A1      => w_A(3 downto 0),
             B1      => w_B_inv(3 downto 0),
@@ -104,7 +104,7 @@ begin
             Cout1   => w_Cin2
             
         );
-    rippleadder2_unit: ripple_adder2
+    ripple_adder2_unit: ripple_adder2
         port map(
             A2      => w_A(7 downto 4),
             B2      => w_B_inv(7 downto 4),
@@ -132,6 +132,7 @@ begin
     
 --THIS IS ALL THE FLAGS
     -- overflow
+    w_SUM(7) <= w_ripple_result(7);
     w_overflow1 <= w_ALU_op(0) XOR w_A(7) XOR w_B(7);
     w_overflow2 <= w_A(7) XOR w_SUM(7);
     w_OVERFLOW  <= w_overflow1 AND w_overflow2 AND (not w_ALU_op(1));
