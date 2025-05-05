@@ -142,7 +142,7 @@ begin
     w_NEGATIVE <= w_RESULT(7);
     
     -- zero
-    w_ZERO <= '1' when w_RESULT = x"00" else '0';
+    w_ZERO <= not (w_result(7) OR w_result(6) OR w_result(5) OR w_result (4) OR w_result(3) OR w_result(2) OR w_result(1) OR w_result(0));
     
     --combining all the flags
     o_flags(3) <= w_NEGATIVE;
