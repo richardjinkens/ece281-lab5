@@ -52,8 +52,7 @@ architecture Behavioral of ALU is
     end component;
     
     
-    signal w_A1, w_B1, w_A2, w_B2, w_S1, w_S2 : std_logic_vector(3 downto 0);
-    signal w_Cin1, w_Cin2, w_Cout1, w_Cout2 : std_logic;
+    signal w_Cin2, w_Cout2 : std_logic;
 
     signal w_A      : std_logic_vector(7 downto 0);
     signal w_B      : std_logic_vector(7 downto 0);
@@ -113,7 +112,7 @@ begin
         w_B_inv <= w_MUX_out;
         o_result <= w_RESULT;
         w_ALU_op <= i_op;
-        w_SUM <= w_ripple_result(7);
+        
         
 --right side of figure 5.17
     --this inverts B or not
@@ -136,7 +135,7 @@ begin
     -- overflow
     w_SUM <= w_ripple_result(7);
     w_overflow1 <= w_ALU_op(0) XOR w_A(7) XOR w_B(7);
-    w_overflow2 <= w_A(7) XOR w_SUM;
+    w_overflow2 <= w_A(7) XOR w_ripple_result(7);
     w_OVERFLOW  <= w_overflow1 AND w_overflow2 AND (not w_ALU_op(1));
     
     -- carry
