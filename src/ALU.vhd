@@ -28,8 +28,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+library UNISIM;
+use UNISIM.VComponents.all;
 
 entity ALU is
     Port ( i_A : in STD_LOGIC_VECTOR (7 downto 0);
@@ -40,6 +40,16 @@ entity ALU is
 end ALU;
 
 architecture Behavioral of ALU is
+    
+    component ripple_adder
+        Port (
+            A       : in std_logic_vector(3 downto 0);
+            B       : in std_logic_vector(3 downto 0);
+            Cin     : in std_logic;
+            S       : out std_logic_vector(3 downto 0);
+            Cout    : out std_logic
+        );
+    
     
     signal w_A1, w_B1, w_A2, w_B2, w_S1, w_S2 : std_logic_vector(3 downto 0);
     signal w_Cin1, w_Cin2, w_Cout1, w_Cout2 : std_logic;
@@ -78,7 +88,7 @@ architecture Behavioral of ALU is
     
     
 begin
-    adder_low: entity work.ripple_adder
+    adder_low: ripple_adder
         port map(
             A      => w_A(3 downto 0),
             B      => w_B_inv(3 downto 0),
@@ -87,7 +97,7 @@ begin
             Cout   => w_Cin2
             
         );
-    adder_high: entity work.ripple_adder
+    adder_high: ripple_adder
         port map(
             A      => w_A(7 downto 4),
             B      => w_B_inv(7 downto 4),
