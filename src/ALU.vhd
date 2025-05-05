@@ -40,25 +40,6 @@ entity ALU is
 end ALU;
 
 architecture Behavioral of ALU is
-    component ripple_adder1
-        Port (
-            A1 : in std_logic_vector(3 downto 0);
-            B1 : in std_logic_vector(3 downto 0);
-            Cin1 : in std_logic;
-            S1 : out std_logic_vector (3 downto 0);
-            Cout1 : out std_logic
-        );
-    end component;
-    
-    component ripple_adder2
-        Port (
-            A2 : in std_logic_vector(3 downto 0);
-            B2 : in std_logic_vector(3 downto 0);
-            Cin2 : in std_logic;
-            S2 : out std_logic_vector (3 downto 0);
-            Cout2 : out std_logic
-        );
-    end component;   
     
     signal w_A1, w_B1, w_A2, w_B2, w_S1, w_S2 : std_logic_vector(3 downto 0);
     signal w_Cin1, w_Cin2, w_Cout1, w_Cout2 : std_logic;
