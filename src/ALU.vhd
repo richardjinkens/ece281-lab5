@@ -133,10 +133,10 @@ begin
     -- overflow
     w_overflow1 <= w_ALU_op(0) XOR w_A(7) XOR w_B(7);
     w_overflow2 <= w_A(7) XOR w_ripple_result(7);
-    w_OVERFLOW  <= w_overflow1 AND w_overflow2 AND (not w_ALU_op(1));
+    w_OVERFLOW <= w_overflow1 AND w_overflow2 when w_ALU_op(1 downto 0) = "00" or w_ALU_op(1 downto 0) = "01" else '0';
     
     -- carry
-    w_CARRY <= w_Cout2 AND (not w_ALU_op(1));
+    w_CARRY <= w_Cout2 when w_ALU_op(1 downto 0) = "00" or w_ALU_op(1 downto 0) = "01" else '0';
     
     -- negative
     w_NEGATIVE <= w_RESULT(7);
