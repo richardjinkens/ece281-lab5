@@ -60,7 +60,7 @@ architecture Behavioral of ALU is
     signal w_B_inv  : std_logic_vector(7 downto 0);
     
     signal w_ALU_op : std_logic_vector(2 downto 0);
-    signal w_SUM    : std_logic_vector(7 downto 0);
+    signal w_SUM    : std_logic;
     signal w_FLAG   : std_logic_vector(3 downto 0);
     
     signal w_ripple_result : std_logic_vector(7 downto 0);
@@ -134,9 +134,9 @@ begin
     
 --THIS IS ALL THE FLAGS
     -- overflow
-    w_SUM(7) <= w_ripple_result(7);
+    w_SUM <= w_ripple_result(7);
     w_overflow1 <= w_ALU_op(0) XOR w_A(7) XOR w_B(7);
-    w_overflow2 <= w_A(7) XOR w_SUM(7);
+    w_overflow2 <= w_A(7) XOR w_SUM;
     w_OVERFLOW  <= w_overflow1 AND w_overflow2 AND (not w_ALU_op(1));
     
     -- carry
