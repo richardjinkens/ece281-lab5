@@ -78,22 +78,22 @@ architecture Behavioral of ALU is
     
     
 begin
-    ripple_adder1_unit: ripple_adder1
+    adder_low: entity work.ripple_adder
         port map(
-            A1      => w_A(3 downto 0),
-            B1      => w_B_inv(3 downto 0),
-            Cin1    => w_ALU_op(0),
-            S1      => w_ripple_result(3 downto 0),
-            Cout1   => w_Cin2
+            A      => w_A(3 downto 0),
+            B      => w_B_inv(3 downto 0),
+            Cin    => w_ALU_op(0),
+            S      => w_ripple_result(3 downto 0),
+            Cout   => w_Cin2
             
         );
-    ripple_adder2_unit: ripple_adder2
+    adder_high: entity work.ripple_adder
         port map(
-            A2      => w_A(7 downto 4),
-            B2      => w_B_inv(7 downto 4),
-            Cin2    => w_Cin2,
-            S2      => w_ripple_result(7 downto 4),
-            Cout2   => w_Cout2
+            A      => w_A(7 downto 4),
+            B      => w_B_inv(7 downto 4),
+            Cin    => w_Cin2,
+            S      => w_ripple_result(7 downto 4),
+            Cout   => w_Cout2
             
         );
 --signal declartions 
