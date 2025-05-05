@@ -49,6 +49,7 @@ architecture Behavioral of ALU is
             S       : out std_logic_vector(3 downto 0);
             Cout    : out std_logic
         );
+    end component;
     
     
     signal w_A1, w_B1, w_A2, w_B2, w_S1, w_S2 : std_logic_vector(3 downto 0);
