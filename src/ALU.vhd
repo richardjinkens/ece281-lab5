@@ -94,6 +94,8 @@ architecture Behavioral of ALU is
     signal w_MUX_in3           : std_logic_vector(7 downto 0);
     signal w_MUX_in4           : std_logic_vector(7 downto 0);
     
+    
+    
 begin
     ripple_adder1_unit: ripple_adder1
         port map(
@@ -113,6 +115,13 @@ begin
             Cout2   => w_Cout2
             
         );
+--signal declartions 
+        w_A <= i_A;
+        w_B <= i_B;
+        w_B_inv <= w_MUX_out;
+        o_result <= w_RESULT;
+        w_ALU_op <= i_op;
+        
 --right side of figure 5.17
     --this inverts B or not
     w_MUX_out <= not w_B when w_ALU_op(0) = '1' else w_B;
@@ -124,11 +133,11 @@ begin
     w_MUX_in2 <= w_ripple_result;
     w_MUX_in1 <= w_ripple_result;
     
-    w_RESULT <= w_MUX_in4 when w_ALU_op(1 downto 0) = "11" else
-                w_MUX_in3 when w_ALU_op(1 downto 0) = "10" else
-                w_MUX_in2 when w_ALU_op(1 downto 0) = "01" else
-                w_MUX_in1 when w_ALU_op(1 downto 0) = "00" else
-                "00000000";
+    with w_ALU_op(1 downto 0) select
+        w_RESULT <= w_MUX_in4 when "11",
+                    w_MUX_in3 when "10",
+                    w_MUX_in2 when "01",
+                    w_MUX_in1 when others;
     
 --THIS IS ALL THE FLAGS
     -- overflow
