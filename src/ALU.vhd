@@ -124,10 +124,12 @@ begin
     w_MUX_in1 <= w_ripple_result;
     
     with w_ALU_op(1 downto 0) select
-        w_RESULT <= w_MUX_in4 when "11",
-                    w_MUX_in3 when "10",
-                    w_MUX_in2 when "01",
-                    w_MUX_in1 when others;
+        w_RESULT <= w_MUX_in4 when "011",
+                    w_MUX_in3 when "010",
+                    w_MUX_in2 when "001",
+                    w_MUX_in1 when "000",
+                    x"00"     when others;
+                    
     
 --THIS IS ALL THE FLAGS
     -- overflow
