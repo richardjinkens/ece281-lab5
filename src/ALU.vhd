@@ -113,6 +113,7 @@ begin
         w_B_inv <= w_MUX_out;
         o_result <= w_RESULT;
         w_ALU_op <= i_op;
+        w_SUM <= w_ripple_result(7)
         
 --right side of figure 5.17
     --this inverts B or not
