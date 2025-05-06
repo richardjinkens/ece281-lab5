@@ -132,5 +132,8 @@ begin
     o_flags(2) <= w_ZERO;
     o_flags(1) <= w_CARRY;
     o_flags(0) <= w_OVERFLOW;
+    
+    --result
+    o_result <= w_RESULT;
 
 end Behavioral;
