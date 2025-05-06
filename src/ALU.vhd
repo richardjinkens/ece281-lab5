@@ -51,14 +51,9 @@ architecture Behavioral of ALU is
         );
     end component;
     
-    
-    signal w_Cin2, w_Cout2 : std_logic;
+    signal w_ripple_carry : std_logic_vector(1 downto 0);
 
-    signal w_A      : std_logic_vector(7 downto 0);
-    signal w_B      : std_logic_vector(7 downto 0);
     signal w_B_inv  : std_logic_vector(7 downto 0);
-    
-    signal w_ALU_op : std_logic_vector(2 downto 0);
     
     signal w_ripple_result : std_logic_vector(7 downto 0);
     
@@ -74,71 +69,57 @@ architecture Behavioral of ALU is
     signal w_NEGATIVE   : std_logic;
     signal w_ZERO       : std_logic;
     
-    --signals for first mux
-    signal w_MUX_out    : std_logic_vector(7 downto 0);
-    
-    --signals for second larger mux
-    signal w_MUX_in1           : std_logic_vector(7 downto 0);
-    signal w_MUX_in2           : std_logic_vector(7 downto 0);
-    signal w_MUX_in3           : std_logic_vector(7 downto 0);
-    signal w_MUX_in4           : std_logic_vector(7 downto 0);
     
     
     
 begin
     adder_low: ripple_adder
         port map(
-            A      => w_A(3 downto 0),
+            A      => i_A(3 downto 0),
             B      => w_B_inv(3 downto 0),
-            Cin    => w_ALU_op(0),
+            Cin    => i_op(0),
             S      => w_ripple_result(3 downto 0),
-            Cout   => w_Cin2
+            Cout   => w_ripple_carry(0)
             
         );
     adder_high: ripple_adder
         port map(
-            A      => w_A(7 downto 4),
+            A      => i_A(7 downto 4),
             B      => w_B_inv(7 downto 4),
-            Cin    => w_Cin2,
+            Cin    => w_ripple_carry(0),
             S      => w_ripple_result(7 downto 4),
-            Cout   => w_Cout2
+            Cout   => w_ripple_carry(1)
             
         );
---signal declartions 
-        w_A <= i_A;
-        w_B <= i_B;
-        w_B_inv <= w_MUX_out;
-        o_result <= w_RESULT;
-        w_ALU_op <= i_op;
         
         
 --right side of figure 5.17
     --this inverts B or not
-    w_MUX_out <= not w_B when w_ALU_op(0) = '1' else w_B;
+    with i_op(0) select 
+        w_B_inv <= i_B      when '0',
+                   not i_B  when '1',
+                   i_B      when others;
     
     
     --larger mux in the figure
-    w_MUX_in4 <= w_A OR w_B;
-    w_MUX_in3 <= w_A AND w_B;
-    w_MUX_in2 <= w_ripple_result;
-    w_MUX_in1 <= w_ripple_result;
+    with i_op select
+        w_RESULT <= w_ripple_result when "000",
+                    w_ripple_result when "001",
+                    i_A AND i_B     when "010",
+                    i_A OR i_B      when "011",
+                    "00000000"      when others;              
     
-    with w_ALU_op(1 downto 0) select
-        w_RESULT <= w_MUX_in4 when "011",
-                    w_MUX_in3 when "010",
-                    w_MUX_in2 when "001",
-                    w_MUX_in1 when "000",
-                    x"00"     when others;
+    
                     
     
 --THIS IS ALL THE FLAGS
     -- overflow
-    w_overflow1 <= w_ALU_op(0) XOR w_A(7) XOR w_B(7);
-    w_overflow2 <= w_A(7) XOR w_ripple_result(7);
-    w_OVERFLOW <= w_overflow1 AND w_overflow2 AND (not w_ALU_op(1));
+    w_overflow1 <= i_op(0) XOR i_A(7) XOR i_B(7);
+    w_overflow2 <= i_A(7) XOR w_ripple_result(7);
+    w_OVERFLOW <= w_overflow1 AND w_overflow2 AND (not i_op(1));
     
     -- carry
-    w_CARRY <= (not w_ALU_op(1)) AND w_Cout2;
+    w_CARRY <= (not i_op(1)) AND w_ripple_carry(1);
     
     -- negative
     w_NEGATIVE <= w_RESULT(7);
