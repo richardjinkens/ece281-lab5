@@ -114,7 +114,7 @@ begin
     
 --THIS IS ALL THE FLAGS
     -- overflow
-    w_overflow1 <= i_op(0) XOR i_A(7) XOR i_B(7);
+    w_overflow1 <= (not (i_op(0)) XOR i_A(7) XOR i_B(7));
     w_overflow2 <= i_A(7) XOR w_ripple_result(7);
     w_OVERFLOW <= w_overflow1 AND w_overflow2 AND (not i_op(1));
     
